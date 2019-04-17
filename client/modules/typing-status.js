@@ -5,17 +5,41 @@ export class TypingStatus extends Label {
     super(...args);
 
     this.timeout = 3000;
-    this.timer = null;
+    this.typingUsers = {};
   }
 
-  render = (message = '') => {
-    super.render(message);
+  addTypingUser(username) {
+    this.typingUsers[username] = this.scheduleClear(username);
+    this.render();
+  }
 
-    clearInterval(this.timer);
-    this.timer = this.scheduleClear();
+  removeTypingUser = (username) => {
+    delete this.typingUsers[username];
+    this.render();
   };
 
-  scheduleClear() {
-    return setTimeout(this.render, this.timeout);
+  render() {
+    super.render(this.getMessage());
+  }
+
+  getMessage() {
+    const typingUserNames = Object.keys(this.typingUsers);
+    const count = typingUserNames.length;
+
+    switch (count) {
+      case 2:
+        return `${typingUserNames.join(' and ')} are typing.`;
+      case 1:
+        return `${typingUserNames[0]} is typing`;
+      default:
+        return count > 2 ?
+          'Multiple users are typing.' :
+          '';
+    }
+  }
+
+  scheduleClear(username) {
+    clearTimeout(this.typingUsers[username]);
+    return setTimeout(() => this.removeTypingUser(username), this.timeout);
   }
 }

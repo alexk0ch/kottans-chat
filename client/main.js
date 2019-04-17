@@ -26,11 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.onChatMessage(({ username, message }) => {
     messages.append(username, message);
-    typingStatus.render();
+    typingStatus.removeTypingUser(username);
   });
 
   socket.onUserTyping(username => {
-    typingStatus.render(`${username} is typing ...`);
+    typingStatus.addTypingUser(username);
   });
 
   messageForm.onSubmit(message => {
