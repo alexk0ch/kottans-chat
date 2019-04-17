@@ -1,9 +1,3 @@
-export class UserName {
-  constructor(selector) {
-    this.node = document.querySelector(selector);
-  }
+import {Label} from './label.js';
 
-  render(username) {
-    this.node.innerHTML = username;
-  }
-}
+export class UserName extends Label {}

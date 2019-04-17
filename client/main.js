@@ -2,12 +2,14 @@ import {UserName} from './modules/user-name.js';
 import {Socket} from './modules/socket.js';
 import {Messages} from './modules/messages.js';
 import {MessageForm} from './modules/message-form.js';
+import {TypingStatus} from './modules/typing-status.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const socket = new Socket();
   const userName = new UserName('#username');
   const messages = new Messages('#messages');
   const messageForm = new MessageForm('#messageForm');
+  const typingStatus = new TypingStatus('#typingStatus');
 
   socket.onNameAssigned(username => {
     userName.render(username);
@@ -24,9 +26,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.onChatMessage(({ username, message }) => {
     messages.append(username, message);
+    typingStatus.render('');
+  });
+
+  socket.onUserTyping(username => {
+    typingStatus.render(`${username} is typing ...`);
   });
 
   messageForm.onSubmit(message => {
     socket.emitChatMessage(message);
+  });
+
+  messageForm.onKeypress(() => {
+    socket.emitUserTyping();
   });
 });

@@ -32,6 +32,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('user left', socket.username);
   });
 
+  socket.on('user typing', () => {
+    socket.broadcast.emit('user typing', socket.username);
+  });
+
   socket.on('chat message', message => {
     io.emit('chat message', {
       username: socket.username,
