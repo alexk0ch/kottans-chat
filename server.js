@@ -21,4 +21,6 @@ server.listen(port, () => {
 io.on('connection', (socket) => {
   socket.username = Moniker.choose();
   socket.emit('name assigned', socket.username);
+
+  socket.broadcast.emit('user joined', socket.username);
 });
