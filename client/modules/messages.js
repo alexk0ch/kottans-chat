@@ -10,4 +10,8 @@ export class Messages {
   appendSystem(message) {
     this.append('system', message);
   }
+
+  clear() {
+    this.node.innerHTML = '';
+  }
 }

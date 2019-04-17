@@ -24,22 +24,36 @@ server.listen(port, () => {
 
 io.on('connection', (socket) => {
   socket.username = Moniker.choose();
-  socket.emit('name assigned', socket.username);
+  socket.room = 'general';
 
-  socket.broadcast.emit('user joined', socket.username);
+  socket.emit('name assigned', socket.username);
+  socket.join('general');
+
+  socket.to(socket.room).emit('user joined', socket.username);
 
   socket.on('disconnect', () => {
-    socket.broadcast.emit('user left', socket.username);
+    socket.to(socket.room).emit('user left', socket.username);
   });
 
   socket.on('user typing', () => {
-    socket.broadcast.emit('user typing', socket.username);
+    socket.to(socket.room).emit('user typing', socket.username);
   });
 
   socket.on('chat message', message => {
-    io.emit('chat message', {
+    io.to(socket.room).emit('chat message', {
       username: socket.username,
       message,
     });
+  });
+
+  socket.on('change room', nextRoom => {
+    socket.leave(socket.room);
+    socket.join(nextRoom);
+
+    socket.to(socket.room).emit('user left', socket.username);
+    socket.to(nextRoom).emit('user joined', socket.username);
+
+    socket.room = nextRoom;
+    socket.emit('room changed', nextRoom);
   });
 });

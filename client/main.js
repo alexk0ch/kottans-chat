@@ -3,6 +3,8 @@ import {Socket} from './modules/socket.js';
 import {Messages} from './modules/messages.js';
 import {MessageForm} from './modules/message-form.js';
 import {TypingStatus} from './modules/typing-status.js';
+import {RoomForm} from './modules/room-form.js';
+import {Rooms} from './modules/rooms.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const socket = new Socket();
@@ -10,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const messages = new Messages('#messages');
   const messageForm = new MessageForm('#messageForm');
   const typingStatus = new TypingStatus('#typingStatus');
+  const roomForm = new RoomForm('#room');
+  const rooms = new Rooms('#rooms');
 
   socket.onNameAssigned(username => {
     userName.render(username);
@@ -39,5 +43,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   messageForm.onKeypress(() => {
     socket.emitUserTyping();
+  });
+
+  rooms.render();
+
+  roomForm.onSubmit(room => {
+    socket.emitRoomChange(room);
+  });
+
+  socket.onRoomChanged(room => {
+    rooms.add(room);
+    rooms.select(room);
+    rooms.render();
+    messages.clear();
   });
 });

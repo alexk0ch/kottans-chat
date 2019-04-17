@@ -23,11 +23,19 @@ export class Socket {
     this.socket.on('chat message', handler);
   }
 
+  onRoomChanged(handler) {
+    this.socket.on('room changed', handler);
+  }
+
   emitChatMessage(message) {
     this.socket.emit('chat message', message);
   }
 
   emitUserTyping() {
     this.socket.emit('user typing');
+  }
+
+  emitRoomChange(room) {
+    this.socket.emit('change room', room);
   }
 }
