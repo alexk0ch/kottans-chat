@@ -11,8 +11,7 @@ body {
 
 .main {
 	width: 600px;
-	height: 50vh;
-	margin: 25vh auto;
+	height: 100vh;
 	padding: 10px;
 	background-image: linear-gradient(to right, #e7e9eb 0%,#d1e6f7 198px,#b8dbf9 198px,#becbd5 100%);
 	border-radius: 4px;
