@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.onChatMessage(({ username, message }) => {
     messages.append(username, message);
-    typingStatus.render('');
+    typingStatus.render();
   });
 
   socket.onUserTyping(username => {
