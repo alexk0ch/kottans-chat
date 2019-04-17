@@ -15,4 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.onUserJoined(username => {
     messages.appendSystem(`<b>${username}</b> joined.`);
   });
+
+  socket.onUserLeft(username => {
+    messages.appendSystem(`<b>${username}</b> left.`);
+  });
 });

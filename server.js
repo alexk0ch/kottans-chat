@@ -23,4 +23,8 @@ io.on('connection', (socket) => {
   socket.emit('name assigned', socket.username);
 
   socket.broadcast.emit('user joined', socket.username);
+
+  socket.on('disconnect', () => {
+    socket.broadcast.emit('user left', socket.username);
+  });
 });

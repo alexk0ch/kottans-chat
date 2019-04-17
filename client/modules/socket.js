@@ -10,4 +10,8 @@ export class Socket {
   onUserJoined(handler) {
     this.socket.on('user joined', handler);
   }
+
+  onUserLeft(handler) {
+    this.socket.on('user left', handler);
+  }
 }
