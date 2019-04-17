@@ -31,4 +31,11 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     socket.broadcast.emit('user left', socket.username);
   });
+
+  socket.on('chat message', message => {
+    io.emit('chat message', {
+      username: socket.username,
+      message,
+    });
+  });
 });
